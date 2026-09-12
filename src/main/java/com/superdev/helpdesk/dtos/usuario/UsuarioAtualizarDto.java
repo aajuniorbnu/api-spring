@@ -9,6 +9,9 @@ public record UsuarioAtualizarDto(
         String nome,
 
         @NotBlank @Email @Size(max = 255)
-        String email
+        String email,
+
+        @Size(max = 30) String telefone,
+        @Size(max = 60) String cargo
 ) {
 }

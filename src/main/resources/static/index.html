@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Helpdesk • Central de suporte</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <aside>
+      <a class="brand" href="/"
+        >H<span>Helpdesk<small>CENTRAL DE SUPORTE</small></span></a
+      >
+      <p class="nav-label">GERENCIAR</p>
+      <nav aria-label="Cadastros">
+        <button data-resource="chamados">◎ Chamados</button
+        ><button data-resource="categorias">▦ Categorias</button
+        ><button data-resource="usuarios">♙ Usuários</button
+        ><button data-resource="equipes">◈ Equipes</button>
+      </nav>
+      <a class="docs" href="/docs" target="_blank" rel="noopener"
+        >Documentação da API ↗</a
+      >
+    </aside>
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">PAINEL DE ATENDIMENTO</p>
+          <h1 id="title">Chamados</h1>
+          <p id="subtitle">Organize e acompanhe as solicitações de suporte.</p>
+        </div>
+        <button id="new" class="primary">+ Novo registro</button>
+      </header>
+      <section class="stats">
+        <div><span>Registros</span><strong id="total">—</strong></div>
+        <div><span>Ativos</span><strong id="active">—</strong></div>
+        <div><span>Inativos</span><strong id="inactive">—</strong></div>
+      </section>
+      <section class="panel">
+        <div class="toolbar">
+          <label for="search">Buscar registros</label
+          ><input
+            id="search"
+            type="search"
+            placeholder="Digite para filtrar…"
+          /><button id="refresh">Atualizar</button>
+        </div>
+        <p id="message" role="status" aria-live="polite"></p>
+        <div class="table-wrap">
+          <table>
+            <thead id="head"></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <p class="hint">
+          A exclusão é lógica: registros apagados ficam inativos, preservando o
+          histórico.
+        </p>
+      </section>
+    </main>
+    <dialog id="dialog">
+      <form id="form">
+        <header>
+          <h2 id="form-title"></h2>
+          <button type="button" id="close" aria-label="Fechar">✕</button>
+        </header>
+        <div id="fields"></div>
+        <p id="form-error" role="alert"></p>
+        <footer>
+          <button id="cancel" type="button">Cancelar</button
+          ><button id="save" class="primary" type="submit">Salvar</button>
+        </footer>
+      </form>
+    </dialog>
+  </body>
+</html>

@@ -32,19 +32,22 @@ public class CategoriaService {
     }
     public Categoria atualizar( int id ,CategoriaAtualizarDto dado){
         var categoria = repository.findById(id)
-        .orElseThrow();
+        .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                org.springframework.http.HttpStatus.NOT_FOUND, "Categoria não encontrada"));
         categoria.setNome(dado.nome());
         categoria.setDescricao(dado.descricao());
         return repository.save(categoria);
 
     }
     public Categoria apagar(int id){
-        var categoria = repository.findById(id).orElseThrow();
+        var categoria = repository.findById(id).orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                org.springframework.http.HttpStatus.NOT_FOUND, "Categoria não encontrada"));
         categoria.setAtiva(false);
         return repository.save(categoria);
     }
     public Categoria obterPorId(int id){
-        var categoria = repository.findById(id).orElseThrow();
+        var categoria = repository.findById(id).orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                org.springframework.http.HttpStatus.NOT_FOUND, "Categoria não encontrada"));
         return categoria;
     }
 

@@ -23,6 +23,12 @@ public class Usuario {
     @Column(length = 255, nullable = false)
     private String email;
 
+    @Column(length = 30)
+    private String telefone;
+
+    @Column(length = 60)
+    private String cargo;
+
     @Column(nullable = false)
     private Boolean ativo;
 

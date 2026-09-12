@@ -31,6 +31,8 @@ public class UsuarioService {
         var usuario = Usuario.builder()
                 .nome(dado.nome())
                 .email(dado.email())
+                .telefone(dado.telefone())
+                .cargo(dado.cargo())
                 .ativo(true)
                 .build();
         return repository.save(usuario);
@@ -40,6 +42,8 @@ public class UsuarioService {
         var usuario = obterPorId(id);
         usuario.setNome(dado.nome());
         usuario.setEmail(dado.email());
+        usuario.setTelefone(dado.telefone());
+        usuario.setCargo(dado.cargo());
         return repository.save(usuario);
     }
 
