@@ -27,21 +27,18 @@ class TrabalhoIntegracaoTests {
     }
 
     @Test
-    void crudDasQuatroTabelasComRelacionamentosEExclusaoLogica() throws Exception {
+    void crudDasTresTabelasComRelacionamentosEExclusaoLogica() throws Exception {
         var categoria = Map.<String,Object>of("nome", "Teste " + UUID.randomUUID(), "descricao", "Suporte");
         int categoriaId = criar("/categorias", categoria);
-        var usuario = Map.<String,Object>of("nome", "Pessoa Teste", "email", "teste@example.com", "telefone", "47999999999", "cargo", "Analista");
+        var usuario = Map.<String,Object>of("nome", "Pessoa Teste", "email", "teste@example.com", "papel", "SOLICITANTE");
         int usuarioId = criar("/usuarios", usuario);
-        var equipe = Map.<String,Object>of("nome", "Suporte Teste", "descricao", "Equipe de TI", "email", "suporte@example.com", "telefone", "4733333333", "especialidade", "Redes", "horarioAtendimento", "08h às 18h");
-        int equipeId = criar("/equipes", equipe);
-        var chamado = Map.<String,Object>of("titulo", "Sem conexão", "descricao", "Não conecta à rede", "prioridade", "ALTA", "status", "ABERTO", "prazo", "2026-12-20", "categoriaId", categoriaId, "solicitanteId", usuarioId, "equipeId", equipeId);
+        var chamado = Map.<String,Object>of("titulo", "Sem conexão", "descricao", "Não conecta à rede", "prioridade", "ALTA", "status", "ABERTO", "prazo", "2026-12-20", "categoriaId", categoriaId, "solicitanteId", usuarioId);
         int chamadoId = criar("/chamados", chamado);
         mvc.perform(get("/chamados/" + chamadoId)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.categoria.id").value(categoriaId))
-                .andExpect(jsonPath("$.solicitante.cargo").value("Analista"))
-                .andExpect(jsonPath("$.equipe.id").value(equipeId));
-        var registros = Map.of("/categorias", categoriaId, "/usuarios", usuarioId, "/equipes", equipeId, "/chamados", chamadoId);
-        var dados = Map.of("/categorias", categoria, "/usuarios", usuario, "/equipes", equipe, "/chamados", chamado);
+                .andExpect(jsonPath("$.solicitante.id").value(usuarioId));
+        var registros = Map.of("/categorias", categoriaId, "/usuarios", usuarioId, "/chamados", chamadoId);
+        var dados = Map.of("/categorias", categoria, "/usuarios", usuario, "/chamados", chamado);
         for (var entry : registros.entrySet()) {
             String recurso = entry.getKey();
             String rota = recurso + "/" + entry.getValue();
@@ -59,7 +56,7 @@ class TrabalhoIntegracaoTests {
 
     @Test
     void rejeitarDadosInvalidosERecursosInexistentes() throws Exception {
-        for (String recurso : new String[]{"/categorias", "/usuarios", "/equipes", "/chamados"}) {
+        for (String recurso : new String[]{"/categorias", "/usuarios", "/chamados"}) {
             mvc.perform(post(recurso).contentType(MediaType.APPLICATION_JSON).content("{}"))
                     .andExpect(status().isBadRequest()).andExpect(jsonPath("$.erros").isArray());
             mvc.perform(get(recurso + "/2147483647")).andExpect(status().isNotFound());
@@ -68,7 +65,7 @@ class TrabalhoIntegracaoTests {
         mvc.perform(post("/usuarios").contentType(MediaType.APPLICATION_JSON).content("{\"nome\":\"Ana\" \"email\":\"a@example.com\"}"))
                 .andExpect(status().isBadRequest()).andExpect(jsonPath("$.message").exists());
         mvc.perform(post("/chamados").contentType(MediaType.APPLICATION_JSON).content("""
-            {"titulo":"Teste", "descricao":"Teste", "prioridade":"ALTA", "status":"ABERTO", "prazo":"2026-12-20", "categoriaId":2147483647, "solicitanteId":2147483647, "equipeId":2147483647}
+            {"titulo":"Teste", "descricao":"Teste", "prioridade":"ALTA", "status":"ABERTO", "prazo":"2026-12-20", "categoriaId":2147483647, "solicitanteId":2147483647}
             """)).andExpect(status().isNotFound());
     }
 }

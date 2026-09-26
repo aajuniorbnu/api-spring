@@ -13,7 +13,6 @@ public class ChamadoService {
     private final ChamadoRepository repository;
     private final CategoriaRepository categorias;
     private final UsuarioRepository usuarios;
-    private final EquipeRepository equipes;
     public List<Chamado> listar() { return repository.findAll(); }
     public Chamado obterPorId(int id) {
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chamado não encontrado"));
@@ -27,7 +26,6 @@ public class ChamadoService {
         var item = new Chamado();
         var categoria = categorias.findById(dado.categoriaId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrado"));
         var solicitante = usuarios.findById(dado.solicitanteId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado"));
-        var equipe = equipes.findById(dado.equipeId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Equipe não encontrado"));
         item.setTitulo(dado.titulo());
         item.setDescricao(dado.descricao());
         item.setPrioridade(dado.prioridade());
@@ -35,14 +33,12 @@ public class ChamadoService {
         item.setPrazo(dado.prazo());
         item.setCategoria(categoria);
         item.setSolicitante(solicitante);
-        item.setEquipe(equipe);
         return repository.save(item);
     }
     public Chamado atualizar(int id, ChamadoAtualizarDto dado) {
         var item = obterPorId(id);
         var categoria = categorias.findById(dado.categoriaId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrado"));
         var solicitante = usuarios.findById(dado.solicitanteId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado"));
-        var equipe = equipes.findById(dado.equipeId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Equipe não encontrado"));
         item.setTitulo(dado.titulo());
         item.setDescricao(dado.descricao());
         item.setPrioridade(dado.prioridade());
@@ -50,7 +46,6 @@ public class ChamadoService {
         item.setPrazo(dado.prazo());
         item.setCategoria(categoria);
         item.setSolicitante(solicitante);
-        item.setEquipe(equipe);
         return repository.save(item);
     }
 }

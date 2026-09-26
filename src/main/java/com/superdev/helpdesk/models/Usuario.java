@@ -1,5 +1,6 @@
 package com.superdev.helpdesk.models;
 
+import com.superdev.helpdesk.enums.Papel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,11 +24,11 @@ public class Usuario {
     @Column(length = 255, nullable = false)
     private String email;
 
-    @Column(length = 30)
-    private String telefone;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private Papel papel;
 
-    @Column(length = 60)
-    private String cargo;
+
 
     @Column(nullable = false)
     private Boolean ativo;

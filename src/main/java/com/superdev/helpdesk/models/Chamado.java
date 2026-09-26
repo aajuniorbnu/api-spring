@@ -21,8 +21,6 @@ public class Chamado {
     private Categoria categoria;
     @ManyToOne(optional=false) @JoinColumn(name="solicitante_id", nullable=false)
     private Usuario solicitante;
-    @ManyToOne(optional=false) @JoinColumn(name="equipe_id", nullable=false)
-    private Equipe equipe;
     @Column(nullable=false)
     private Boolean ativo;
     @Column(nullable=false, updatable=false)

@@ -25,18 +25,6 @@ const config = {
       field("cargo", "Cargo", "text", false, 60),
     ],
   },
-  equipes: {
-    title: "Equipes",
-    description: "Organize os responsáveis pelo suporte.",
-    fields: [
-      field("nome", "Nome", "text", true, 60),
-      field("descricao", "Descrição", "textarea", false, 255),
-      field("email", "E-mail", "email", true, 255),
-      field("telefone", "Telefone", "tel", true, 30),
-      field("especialidade", "Especialidade", "text", true, 100),
-      field("horarioAtendimento", "Horário de atendimento", "text", true, 100),
-    ],
-  },
   chamados: {
     title: "Chamados",
     description: "Organize e acompanhe as solicitações de suporte.",
@@ -61,11 +49,6 @@ const config = {
         ...field("solicitanteId", "Solicitante", "select"),
         resource: "usuarios",
         property: "solicitante",
-      },
-      {
-        ...field("equipeId", "Equipe", "select"),
-        resource: "equipes",
-        property: "equipe",
       },
     ],
   },

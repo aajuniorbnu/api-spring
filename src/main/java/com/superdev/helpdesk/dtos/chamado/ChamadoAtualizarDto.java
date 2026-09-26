@@ -8,6 +8,5 @@ public record ChamadoAtualizarDto(
     @NotBlank @Pattern(regexp="ABERTO|EM_ANDAMENTO|RESOLVIDO|FECHADO") String status,
     @NotNull LocalDate prazo,
     @NotNull @Positive Integer categoriaId,
-    @NotNull @Positive Integer solicitanteId,
-    @NotNull @Positive Integer equipeId
+    @NotNull @Positive Integer solicitanteId
 ) {}
