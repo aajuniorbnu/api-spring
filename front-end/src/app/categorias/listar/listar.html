@@ -1,0 +1,45 @@
+<div>
+    <div class="cabecalho-pagina">
+        <h1 > Categorias</h1>
+        <a routerLink="/categorias/cadastrar" class="btn btn-primario">Cadastrar</a>
+    </div>
+
+    <div class="tabela-container">
+        table class="tabela">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="direita">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+               @for (categoria of categorias(); track categoria.id) {
+                    <tr>
+                        <td class="suave">{{ categoria.id }}</td>
+                        <td class="nome">{{ categoria.nome }}</td>
+                        <td class="suave">{{ categoria.descricao }}</td>
+                        <td>
+                          @if(categoria.ativa) {
+                            <span class="status ativo">Ativo</span>
+                          } @else {
+                            <span class="status inativo">Inativo</span>
+                          }
+                        </td>
+                        <td class="direita">
+                            
+                            <button  type="button" (click)="apagar(categoria.id)" class="btn btn-danger">Apagar</button>
+                        </td>
+                    </tr>
+                }@empty {
+                    <tr>
+                        <td colspan="5" class="vazio">
+                            Nenhuma categoria encontrada.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+.topo {
+  /* o ciclo de cores aparece duas vezes para a animação emendar sem salto */
+  background: linear-gradient(
+    90deg,
+    #b91c1c, #c2410c, #a16207, #15803d, #1d4ed8, #4338ca, #7e22ce,
+    #b91c1c, #c2410c, #a16207, #15803d, #1d4ed8, #4338ca, #7e22ce,
+    #b91c1c
+  );
+  background-size: 200% 100%;
+  animation: arco-iris 8s linear infinite;
+  color: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.15);
+}
+
+@keyframes arco-iris {
+  from {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topo {
+    animation: none;
+  }
+}
+
+.topo-nav,
+.conteudo {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.topo-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.marca {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.topo-link {
+  border-radius: var(--raio);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+}
+
+.topo-link:hover {
+  background: rgb(0 0 0 / 0.2);
+}
+
+.topo-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.conteudo {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}

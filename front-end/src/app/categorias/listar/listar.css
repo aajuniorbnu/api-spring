@@ -1,0 +1,77 @@
+.tabela-container {
+  overflow-x: auto;
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.tabela th,
+.tabela td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.tabela thead {
+  background: var(--cor-superficie-destaque);
+}
+
+.tabela th {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cor-rotulo);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.tabela tbody tr + tr td {
+  border-top: 1px solid var(--cor-borda);
+}
+
+.tabela tbody tr:hover {
+  background: var(--cor-fundo);
+}
+
+.tabela .direita {
+  text-align: right;
+}
+
+.suave {
+  color: var(--cor-texto-suave);
+}
+
+.nome {
+  font-weight: 500;
+  color: var(--cor-texto-forte);
+}
+
+.etiqueta {
+  display: inline-block;
+  border-radius: 9999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.etiqueta-ativa {
+  background: var(--cor-ativa-fundo);
+  color: var(--cor-ativa-texto);
+}
+
+.etiqueta-inativa {
+  background: var(--cor-inativa-fundo);
+  color: var(--cor-inativa-texto);
+}
+
+.tabela .vazio {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--cor-texto-suave);
+}
