@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, ElementRef, ViewChild, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
@@ -7,8 +7,9 @@ import { UsuarioService } from '../../services/usuario.service';
 import { TicketResponse, Prioridade } from '../../model/ticket.model';
 import { UsuarioResponse } from '../../model/usuario.model';
 type Acao = 'associar' | 'prioridade' | 'resolver' | 'cancelar';
-@Component({ selector: 'app-ticket-listar', imports: [FormsModule, RouterLink], templateUrl: './listar.html' })
+@Component({ selector: 'app-ticket-listar', imports: [FormsModule, RouterLink], templateUrl: './listar.html', styleUrl: './listar.css' })
 export class TicketListar {
+  @ViewChild('modalPrioridade') modalPrioridade!: ElementRef<HTMLDialogElement>;
   itens = signal<TicketResponse[]>([]); atendentes = signal<UsuarioResponse[]>([]);
   carregando = signal(false); ocupado = signal(false); erro = signal(''); mensagem = signal('');
   selecionado = signal<TicketResponse | null>(null); acao: Acao = 'associar';
@@ -25,6 +26,22 @@ export class TicketListar {
   abrir(item: TicketResponse, acao: Acao) {
     this.selecionado.set(item); this.acao = acao; this.usuarioId = null;
     this.texto = ''; this.prioridade = item.prioridade ?? 'MEDIA'; this.erro.set(''); this.mensagem.set('');
+    if (acao === 'prioridade') this.modalPrioridade.nativeElement.showModal();
+  }
+  fecharPrioridade() {
+    if (this.ocupado()) return;
+    this.modalPrioridade.nativeElement.close();
+    this.selecionado.set(null);
+    this.erro.set('');
+  }
+  cancelarPrioridade(event: Event) {
+    event.preventDefault();
+    this.fecharPrioridade();
+  }
+  selecionarPrioridade(prioridade: Prioridade) {
+    if (this.ocupado()) return;
+    this.prioridade = prioridade;
+    this.executar();
   }
   executar() {
     const item = this.selecionado();
@@ -38,7 +55,7 @@ export class TicketListar {
     }
     this.ocupado.set(true); this.erro.set('');
     requisicao.subscribe({
-      next: atualizado => { this.itens.update(itens => itens.map(i => i.id === atualizado.id ? atualizado : i)); this.ocupado.set(false); this.selecionado.set(null); this.mensagem.set('Ticket atualizado com sucesso.'); },
+      next: atualizado => { this.itens.update(itens => itens.map(i => i.id === atualizado.id ? atualizado : i)); this.ocupado.set(false); if (this.acao === 'prioridade') this.modalPrioridade.nativeElement.close(); this.selecionado.set(null); this.mensagem.set('Ticket atualizado com sucesso.'); },
       error: () => { this.erro.set('Não foi possível atualizar. Confira os campos e o status atual do ticket.'); this.ocupado.set(false); }
     });
   }

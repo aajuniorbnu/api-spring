@@ -1,19 +1,31 @@
 <div class="cabecalho-pagina"><h1>Tickets</h1><a class="btn btn-primario" routerLink="/tickets/cadastrar">Cadastrar ticket</a></div>
-@if (erro()) { <p class="aviso erro" role="alert">{{ erro() }}</p><button class="btn btn-primario" [disabled]="ocupado()" (click)="carregar()">Atualizar lista</button> }
+@if (erro() && !(selecionado() && acao === 'prioridade')) { <p class="aviso erro" role="alert">{{ erro() }}</p><button class="btn btn-primario" [disabled]="ocupado()" (click)="carregar()">Atualizar lista</button> }
 @if (mensagem()) { <p class="aviso sucesso" role="status">{{ mensagem() }}</p> }
+<dialog #modalPrioridade class="modal-prioridade" aria-labelledby="titulo-prioridade" aria-describedby="descricao-prioridade" (cancel)="cancelarPrioridade($event)">
+<h2 id="titulo-prioridade">Definir prioridade</h2>
+<p id="descricao-prioridade">Selecione a prioridade para o ticket: <strong>{{ selecionado()?.titulo }}</strong></p>
+@if (erro()) { <p class="aviso erro" role="alert">{{ erro() }}</p> }
+<div class="opcoes-prioridade" [attr.aria-busy]="ocupado()">
+<button class="btn prioridade-baixa" type="button" [disabled]="ocupado()" (click)="selecionarPrioridade('BAIXA')">Baixa</button>
+<button class="btn prioridade-media" type="button" [disabled]="ocupado()" (click)="selecionarPrioridade('MEDIA')">Média</button>
+<button class="btn prioridade-alta" type="button" [disabled]="ocupado()" (click)="selecionarPrioridade('ALTA')">Alta</button>
+</div>
+@if (ocupado()) { <p role="status">Salvando prioridade…</p> }
+<div class="acoes"><button class="btn btn-primario" type="button" [disabled]="ocupado()" (click)="fecharPrioridade()">Fechar</button></div>
+</dialog>
 @if (selecionado(); as item) {
+@if (acao !== 'prioridade') {
 <section class="cartao painel-acao"><h2>Atualizar ticket: {{ item.titulo }}</h2>
 <form #acaoForm="ngForm" (ngSubmit)="executar()"><fieldset [disabled]="ocupado()">
 @if (acao === 'associar') {
 <div class="campo"><label for="atendente">Atendente</label><select id="atendente" name="atendente" [(ngModel)]="usuarioId" required><option [ngValue]="null">Selecione</option>@for (u of atendentes(); track u.id) { <option [ngValue]="u.id">{{ u.nome }}</option> }</select></div>
 <p><a routerLink="/usuarios/cadastrar">Cadastrar atendente</a></p>
-} @else if (acao === 'prioridade') {
-<div class="campo"><label for="prioridade">Prioridade</label><select id="prioridade" name="prioridade" [(ngModel)]="prioridade" required><option>BAIXA</option><option>MEDIA</option><option>ALTA</option></select></div>
 } @else {
 <div class="campo"><label for="texto">{{ acao === 'resolver' ? 'Descrição da solução' : 'Motivo do cancelamento' }}</label><textarea id="texto" name="texto" [(ngModel)]="texto" required minlength="10" maxlength="5000" rows="4"></textarea><small>De 10 a 5000 caracteres.</small></div>
 }
 <div class="acoes"><button class="btn btn-primario" type="submit" [disabled]="acaoForm.invalid || ocupado()">{{ ocupado() ? 'Salvando…' : 'Confirmar' }}</button><button class="btn btn-primario" type="button" (click)="selecionado.set(null)">Fechar</button></div>
 </fieldset></form></section>
+}
 }
 @if (carregando()) { <p role="status">Carregando…</p> } @else {
 @for (item of itens(); track item.id) {
