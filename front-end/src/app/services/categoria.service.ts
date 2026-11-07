@@ -1,25 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CategoriaCadastrarRequest, CategoriaResponse } from '../model/categoria.model';
 import { Observable } from 'rxjs';
+import { CategoriaCriarDto } from '../dtos/categoria/categoria-criar.dto';
+import { CategoriaAtualizarDto } from '../dtos/categoria/categoria-atualizar.dto';
+import { CategoriaRespostaDto } from '../dtos/categoria/categoria-resposta.dto';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class CategoriaService {
-  private baseUrl: string = 'http://localhost:8080';
-constructor(private httpClient: HttpClient) {
-}
-cadastrarCategoria(categoria:CategoriaCadastrarRequest):Observable<void>  {
-  const url= this.baseUrl + '/categorias';
-  return this.httpClient.post<void>(url, categoria);
-}
-listar(): Observable<CategoriaResponse[]> {
-  const url = this.baseUrl + '/categorias';
-  return this.httpClient.get<CategoriaResponse[]>(url);
-}
-apagar(id: number): Observable<void> {
-  const url = this.baseUrl + '/categorias/' + id;
-  return this.httpClient.delete<void>(url);
-}
+  private baseUrl = '/api/categorias';
+
+  constructor(private httpClient: HttpClient) {}
+
+  cadastrarCategoria(categoria: CategoriaCriarDto): Observable<CategoriaRespostaDto> {
+    return this.httpClient.post<CategoriaRespostaDto>(this.baseUrl, categoria);
+  }
+
+  listar(): Observable<CategoriaRespostaDto[]> {
+    return this.httpClient.get<CategoriaRespostaDto[]>(this.baseUrl);
+  }
+
+  obterPorId(id: number): Observable<CategoriaRespostaDto> {
+    return this.httpClient.get<CategoriaRespostaDto>(this.baseUrl + '/' + id);
+  }
+
+  atualizar(id: number, categoria: CategoriaAtualizarDto): Observable<CategoriaRespostaDto> {
+    return this.httpClient.put<CategoriaRespostaDto>(this.baseUrl + '/' + id, categoria);
+  }
+
+  apagar(id: number): Observable<CategoriaRespostaDto> {
+    return this.httpClient.delete<CategoriaRespostaDto>(this.baseUrl + '/' + id);
+  }
 }

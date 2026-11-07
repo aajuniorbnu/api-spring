@@ -75,3 +75,6 @@
   text-align: center;
   color: var(--cor-texto-suave);
 }
+
+.acoes { display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; flex-wrap: wrap; min-width: 11rem; }
+.descricao { overflow-wrap: anywhere; max-width: 24rem; white-space: pre-wrap; }

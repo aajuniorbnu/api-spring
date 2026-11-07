@@ -67,3 +67,12 @@
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
+
+.menu { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.topo-nav { gap: 1rem; flex-wrap: wrap; }
+@media (max-width: 480px) {
+  .topo-nav { align-items: flex-start; }
+  .conteudo { padding: 1rem; }
+}
+
+.topo-link.ativo { background: rgb(0 0 0 / 0.3); text-decoration: underline; }

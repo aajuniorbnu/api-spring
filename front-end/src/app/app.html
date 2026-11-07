@@ -1,14 +1,14 @@
 <header class="topo">
-    <nav class="topo-nav" aria-label="Principal">
-        <span class="marca">Helpdesk</span>
-        <a routerLink="/categorias/cadastrar">Cadastrar categoria</a>
-        </nav>
+  <nav class="topo-nav" aria-label="Principal">
+    <span class="marca">Helpdesk</span>
+    <div class="menu">
+      <a routerLink="/categorias/listar" class="topo-link" routerLinkActive="ativo" ariaCurrentWhenActive="page">Categorias</a>
+      <a routerLink="/usuarios/listar" class="topo-link" routerLinkActive="ativo" ariaCurrentWhenActive="page">Usuários</a>
+      <a routerLink="/chamados/listar" class="topo-link" routerLinkActive="ativo" ariaCurrentWhenActive="page">Chamados</a>
+      <a routerLink="/tickets/listar" class="topo-link" routerLinkActive="ativo" ariaCurrentWhenActive="page">Tickets</a>
+    </div>
+  </nav>
 </header>
 <main class="conteudo">
-    <router-outlet />
-    
-</main> 
-  
-
-
-
+  <router-outlet />
+</main>

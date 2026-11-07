@@ -1,0 +1,7 @@
+<section class="cartao"><div class="cabecalho-pagina"><h1>{{ id === null ? 'Cadastrar' : 'Editar' }} usuário</h1><a class="voltar" routerLink="/usuarios/listar">Voltar</a></div>
+@if (erro()) { <p class="aviso erro" role="alert">{{ erro() }}</p> }
+@if (carregando()) { <p role="status">Carregando…</p> }
+<form #cadastro="ngForm" (ngSubmit)="salvar()"><fieldset [disabled]="salvando() || carregando() || indisponivel()"><div class="campo"><label for="nome">Nome</label><input id="nome" name="nome" [(ngModel)]="form.nome" required minlength="2" maxlength="60"></div>
+<div class="campo"><label for="email">E-mail</label><input id="email" name="email" [(ngModel)]="form.email" required type="email" email maxlength="255"></div>
+<div class="campo"><label for="papel">Papel</label><select id="papel" name="papel" [(ngModel)]="form.papel" required><option value="SOLICITANTE">SOLICITANTE</option><option value="ATENDENTE">ATENDENTE</option></select></div>
+<button class="btn btn-primario" type="submit" [disabled]="cadastro.invalid || salvando()">{{ salvando() ? 'Salvando…' : 'Salvar' }}</button></fieldset></form></section>

@@ -57,7 +57,7 @@ public class TicketService {
         //com id e data é possivel gerar o numero do protocolo
         String numeroProtocolo = gerarNumeroProtocolo(ticket);
         ticket.setNumeroProtocolo(numeroProtocolo);
-        return ticket;
+        return repository.save(ticket);
     }
 
     public Ticket associar(int id, TicketAssociarDto dado) {
@@ -92,6 +92,8 @@ public class TicketService {
         if (ticket.getStatus() != StatusTicket.EM_ANALISE) {
             throw new RegraNegocio("Ticket nao pode ser resolvido quando nao tiver em analise");
         }
+        ticket.setDescricaoSolucao(dado.descricaoSolucao());
+        ticket.setStatus(StatusTicket.RESOLVIDO);
         return repository.save(ticket);
     }
 

@@ -1,45 +1,42 @@
-<div>
-    <div class="cabecalho-pagina">
-        <h1 > Categorias</h1>
-        <a routerLink="/categorias/cadastrar" class="btn btn-primario">Cadastrar</a>
-    </div>
-
-    <div class="tabela-container">
-        table class="tabela">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Descrição</th>
-                    <th scope="col">Status</th>
-                    <th scope="col" class="direita">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-               @for (categoria of categorias(); track categoria.id) {
-                    <tr>
-                        <td class="suave">{{ categoria.id }}</td>
-                        <td class="nome">{{ categoria.nome }}</td>
-                        <td class="suave">{{ categoria.descricao }}</td>
-                        <td>
-                          @if(categoria.ativa) {
-                            <span class="status ativo">Ativo</span>
-                          } @else {
-                            <span class="status inativo">Inativo</span>
-                          }
-                        </td>
-                        <td class="direita">
-                            
-                            <button  type="button" (click)="apagar(categoria.id)" class="btn btn-danger">Apagar</button>
-                        </td>
-                    </tr>
-                }@empty {
-                    <tr>
-                        <td colspan="5" class="vazio">
-                            Nenhuma categoria encontrada.
-                        </td>
-                    </tr>
-                }
-            </tbody>
-    </div>
+<div class="cabecalho-pagina">
+  <h1>Categorias</h1>
+  <a routerLink="/categorias/cadastrar" class="btn btn-primario">Cadastrar categoria</a>
 </div>
+@if (mensagem()) { <p class="aviso sucesso" role="status">{{ mensagem() }}</p> }
+@if (erro()) {
+  <p class="aviso erro" role="alert">{{ erro() }}</p>
+  <button type="button" class="btn btn-primario" (click)="carregarCategorias()">Recarregar lista</button>
+}
+@if (carregando()) {
+  <p role="status">Carregando categorias...</p>
+} @else if (!erro() || categorias().length > 0) {
+  <div class="tabela-container">
+    <table class="tabela">
+      <thead><tr>
+        <th scope="col">ID</th><th scope="col">Nome</th><th scope="col">Descrição</th>
+        <th scope="col">Situação</th><th scope="col" class="direita">Ações</th>
+      </tr></thead>
+      <tbody>
+        @for (categoria of categorias(); track categoria.id) {
+          <tr>
+            <td>{{ categoria.id }}</td>
+            <td class="nome">{{ categoria.nome }}</td>
+            <td class="suave descricao">{{ categoria.descricao || '—' }}</td>
+            <td><span class="etiqueta" [class.etiqueta-ativa]="categoria.ativa" [class.etiqueta-inativa]="!categoria.ativa">
+              {{ categoria.ativa ? 'Ativa' : 'Inativa' }}
+            </span></td>
+            <td><div class="acoes">
+              <a [routerLink]="['/categorias/editar', categoria.id]" class="btn btn-primario">Editar</a>
+              <button type="button" class="btn btn-perigo" (click)="apagar(categoria.id)"
+                [disabled]="!categoria.ativa || desativando() !== null">
+                {{ desativando() === categoria.id ? 'Desativando...' : 'Desativar' }}
+              </button>
+            </div></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="5" class="vazio">Nenhuma categoria cadastrada.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

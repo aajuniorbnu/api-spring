@@ -1,0 +1,7 @@
+<div class="cabecalho-pagina"><h1>Usuários</h1><a class="btn btn-primario" routerLink="/usuarios/cadastrar">Cadastrar usuário</a></div>
+@if (erro()) { <p role="alert" class="aviso erro">{{ erro() }}</p><button class="btn btn-primario" (click)="carregar()">Tentar novamente</button> }
+@if (carregando()) { <p role="status">Carregando…</p> } @else {
+<div class="tabela-scroll"><table><thead><tr><th>Nome</th><th>E-mail</th><th>Papel</th><th>Ativo</th><th>Ações</th></tr></thead><tbody>
+@for (item of itens(); track item.id) { <tr><td>{{ item.nome }}</td><td>{{ item.email }}</td><td>{{ item.papel }}</td><td>{{ item.ativo ? 'Sim' : 'Não' }}</td><td class="acoes"><a class="btn btn-primario" [routerLink]="['/usuarios/editar', item.id]">Editar</a><button class="btn btn-perigo" [disabled]="!item.ativo || ocupado()" (click)="desativar(item.id)">Desativar</button></td></tr> }
+@empty { <tr><td colspan="5">Nenhum registro encontrado.</td></tr> }
+</tbody></table></div> }
