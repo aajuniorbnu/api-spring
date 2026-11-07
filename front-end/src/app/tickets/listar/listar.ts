@@ -10,6 +10,7 @@ type Acao = 'associar' | 'prioridade' | 'resolver' | 'cancelar';
 @Component({ selector: 'app-ticket-listar', imports: [FormsModule, RouterLink], templateUrl: './listar.html', styleUrl: './listar.css' })
 export class TicketListar {
   @ViewChild('modalPrioridade') modalPrioridade!: ElementRef<HTMLDialogElement>;
+  @ViewChild('modalAtendente') modalAtendente!: ElementRef<HTMLDialogElement>;
   itens = signal<TicketResponse[]>([]); atendentes = signal<UsuarioResponse[]>([]);
   carregando = signal(false); ocupado = signal(false); erro = signal(''); mensagem = signal('');
   selecionado = signal<TicketResponse | null>(null); acao: Acao = 'associar';
@@ -26,7 +27,18 @@ export class TicketListar {
   abrir(item: TicketResponse, acao: Acao) {
     this.selecionado.set(item); this.acao = acao; this.usuarioId = null;
     this.texto = ''; this.prioridade = item.prioridade ?? 'MEDIA'; this.erro.set(''); this.mensagem.set('');
+    if (acao === 'associar') this.modalAtendente.nativeElement.showModal();
     if (acao === 'prioridade') this.modalPrioridade.nativeElement.showModal();
+  }
+  fecharAtendente() {
+    if (this.ocupado()) return;
+    this.modalAtendente.nativeElement.close();
+    this.selecionado.set(null);
+    this.erro.set('');
+  }
+  cancelarAtendente(event: Event) {
+    event.preventDefault();
+    this.fecharAtendente();
   }
   fecharPrioridade() {
     if (this.ocupado()) return;
@@ -55,7 +67,7 @@ export class TicketListar {
     }
     this.ocupado.set(true); this.erro.set('');
     requisicao.subscribe({
-      next: atualizado => { this.itens.update(itens => itens.map(i => i.id === atualizado.id ? atualizado : i)); this.ocupado.set(false); if (this.acao === 'prioridade') this.modalPrioridade.nativeElement.close(); this.selecionado.set(null); this.mensagem.set('Ticket atualizado com sucesso.'); },
+      next: atualizado => { this.itens.update(itens => itens.map(i => i.id === atualizado.id ? atualizado : i)); this.ocupado.set(false); if (this.acao === 'prioridade') this.modalPrioridade.nativeElement.close(); if (this.acao === 'associar') this.modalAtendente.nativeElement.close(); this.selecionado.set(null); this.mensagem.set('Ticket atualizado com sucesso.'); },
       error: () => { this.erro.set('Não foi possível atualizar. Confira os campos e o status atual do ticket.'); this.ocupado.set(false); }
     });
   }

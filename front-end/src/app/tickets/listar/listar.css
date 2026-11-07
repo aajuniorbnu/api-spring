@@ -1,4 +1,4 @@
-.modal-prioridade {
+.modal-ticket {
   width: min(30rem, calc(100% - 2rem));
   max-height: calc(100dvh - 2rem);
   padding: 1.5rem;
@@ -9,7 +9,7 @@
   box-shadow: 0 1rem 3rem rgb(0 0 0 / .25);
   overflow-wrap: anywhere;
 }
-.modal-prioridade::backdrop { background: rgb(0 0 0 / .6); }
+.modal-ticket::backdrop { background: rgb(0 0 0 / .6); }
 .opcoes-prioridade { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.5rem 0; }
 .opcoes-prioridade .btn { flex: 1 1 7rem; padding: .875rem 1rem; }
 .prioridade-baixa { background: #15803d; color: #fff; }
